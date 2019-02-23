@@ -1,0 +1,22 @@
+{
+    "version" : "3.0.3",
+    "compilerOptions" : {
+        "module" : "system",
+        "removeComments" : true,
+        "outFile" : "./out.js",
+        "baseUrl" : "./",
+        "sourceMap" : true,
+        "alwaysStrict" : true,
+        "declaration" : true,
+		"experimentalDecorators" : true
+    },
+    "files" : [
+        "../../../libs/organizer/out.d.ts"
+    ],
+    "include": [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "./out.d.ts"
+    ]
+}
