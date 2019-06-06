@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>4. Simple Loop</title>
+    <script type="text/javascript" src="../../js/dom.js"></script>
+    <script type="text/javascript" src="../../js/out.js"></script>
+</head>
+<body>
+    <script type="text/html" id="template">
+        <div var-controller="Root as root">
+            <div var-handle="hHeader"></div>
+            <div var-repeat="people:array" var-controller="Person">
+                <span var-handle="hInvitation"></span>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+
+
+        function EmptyService()
+        {
+            this.onCreate = function()
+            {
+                console.log( 'EmptyService.onCreate()' );
+            };
+
+            this.getHeader = function()
+            {
+                return 'People list:';
+            };
+
+            this.getInvitation = function( name )
+            {
+                return 'Hi ' + name + '.';
+            };
+        }
+
+
+
+        function RootController()
+        {
+            // var loops;
+
+            // var hHeader;
+
+            this.onCreate = function()
+            {
+                var people = this.loops.getLoop( 'people' );
+
+                var data = [
+                    {
+                        name: 'Jak Kowalski',
+                        age: 40
+                    },
+                    {
+                        name: 'Mikołaj Kopernik',
+                        age: 63
+                    },
+                    {
+                        name: 'Kubuś Puchatek',
+                        age: 13
+                    }
+                ];
+
+                this.hHeader.textContent = this.empty.getHeader();
+
+                for( var i = 0; i < data.length; ++i )
+                    people.addItem( data[ i ] );
+            };
+        }
+
+        RootController.INJECTIONS = [
+            new Core.Organizer.InjectionSurrogate( Core.Organizer.InjectionName.Loops, 'loops' ),
+            new Core.Organizer.InjectionSurrogate( 'Empty', 'empty' ) // Empty - nazwa dostępnego serwisu, empty - nazwa zmiennej wewnątrz której umeiszczona zostanie referencja do instancji obiektu typu EmptyService
+        ];
+
+
+
+        function PersonController()
+        {
+            // var hInvitation;
+
+            this.onCreate = function( index, data )
+            {
+                this.hInvitation.textContent = this.empty.getInvitation( data.name );
+            };
+        }
+
+        PersonController.INJECTIONS = [
+            new Core.Organizer.InjectionSurrogate( 'Empty', 'empty' ) // Empty - nazwa dostępnego serwisu (instancja typu EmptyService), empty - nazwa zmiennej wewnątrz której umeiszczona zostanie referencja do instancji obiektu typu EmptyService
+        ];
+
+
+
+        var hTemplate = document.getElementById( 'template' );
+
+        var organizer = new Core.Organizer.Organizer( 'Root', null, true );
+
+        organizer.addService( 'Empty', EmptyService ); // utworzona sostanie tylko jedna instancja o nazwie Empty dla type EmptyService
+        organizer.addController( 'Root', RootController );
+        organizer.addController( 'Person', PersonController );
+
+        var composition = organizer.composeTemplate( hTemplate.innerHTML );
+
+        composition.mount( document.body );
+
+    </script>
+</body>
+</html>

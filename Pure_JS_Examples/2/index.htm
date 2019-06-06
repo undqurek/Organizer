@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2. Simple Controller</title>
+    <script type="text/javascript" src="../../js/dom.js"></script>
+    <script type="text/javascript" src="../../js/out.js"></script>
+</head>
+<body>
+    <script type="text/html" id="template">
+        <div var-controller="Root as root"> <!-- Root - nazwa kontrolera, root - nazwa instancji kontrolera -->
+            Hi <span var-handle="hName"></span>! <!-- hName - lokalny uchwyt do elementu, dostępny będzie wewnątrz instancji typu Root -->
+        </div>
+    </script>
+    <script type="text/javascript">
+
+        function RootController()
+        {
+            // var hName; // ta zmienna jest wstrzyknięta automatycznie
+
+            this.onCreate = function() // w momęcie wywołania tej funkcji szablon jest juz zkompilowany i poskładany
+            {
+                this.hName.textContent = 'Yeti'; // hName jest uchwytem do elementu
+            };
+        }
+
+
+
+        var hTemplate = document.getElementById( 'template' );
+
+        var organizer = new Core.Organizer.Organizer( 'Root', null, true ); // Parametry: 'Root' - nazwa organizera (pomaga podczas wykrywania błędów), null - nadrzędny organizer (można dziedziczyć po nim pewne rzeczy), true - tryb debug
+
+        organizer.addController( 'Root', RootController ); // kontroler powinien zostać dodany przed kompilacją szablonu, który go używa
+
+        var composition = organizer.composeTemplate( hTemplate.innerHTML ); // kompilacja a potem komponowanie w całość szablonu
+
+        composition.mount( document.body ); // umieszczanie szablonu w wyznaczonym miejscu
+
+    </script>
+</body>
+</html>

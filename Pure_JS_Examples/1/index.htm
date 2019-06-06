@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1. Simple Template</title>
+    <script type="text/javascript" src="../../js/dom.js"></script>
+    <script type="text/javascript" src="../../js/out.js"></script>
+</head>
+<body>
+    <script type="text/html" id="template">
+        <div>Hello world!</div>
+    </script>
+    <div id="page"></div>
+    <script type="text/javascript">
+
+        var hTemplate = document.getElementById( 'template' );
+        var hPage = document.getElementById( 'page' );
+
+        var organizer = new Core.Organizer.Organizer( 'Root', null, true ); // Parametry: 'Root' - nazwa organizera (pomaga podczas wykrywania błędów), null - nadrzędny organizer (można dziedziczyć po nim pewne rzeczy), true - tryb debug
+
+        var composition = organizer.composeTemplate( hTemplate.innerHTML ); // kompilacja a potem komponowanie w całość szablonu
+
+        composition.mount( hPage ); // umieszczanie szablonu w wyznaczonym miejscu
+
+        /*
+
+            Można też:
+
+
+            var organizer = new Core.Organizer.Organizer( 'Root', null, true );
+
+            var compilation = organizer.compileTemplate( hTemplate.innerHTML );
+            var composition = compilation.compose();
+
+            composition.mount( hPage );
+
+
+            lub bez dodatkowych tagów:
+
+
+            var organizer = new Core.Organizer.Organizer( 'Root', null, true );
+
+            var compilation = organizer.compileTemplate( '<div>Hello world!</div>' );
+            var composition = compilation.compose();
+
+            composition.mount( document.body );
+
+        */
+
+    </script>
+</body>
+</html>

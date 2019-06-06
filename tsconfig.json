@@ -1,0 +1,24 @@
+{
+    "version" : "3.0.3",
+    "compilerOptions" : {
+        "module" : "system",
+        "removeComments" : true,
+        "outFile" : "out.js",
+        "sourceMap" : true,
+        "alwaysStrict" : true,
+        "declaration" : true,
+		"experimentalDecorators" : true
+        //,
+//        "strict": true,
+//        "noImplicitAny": true,
+//        "strictNullChecks": true,
+//        "noImplicitThis": true,
+//        "alwaysStrict": true
+    },
+    "include" : [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "./out.d.ts"
+    ]
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3. Simple Loop</title>
+    <script type="text/javascript" src="../../js/dom.js"></script>
+    <script type="text/javascript" src="../../js/out.js"></script>
+</head>
+<body>
+    <script type="text/html" id="template">
+        <div var-controller="Root as root">
+            <div>People list:</div>
+            <div var-repeat="people:array" var-controller="Person"> <!-- people - pętla przechowujaca elementy w tablicy (array type) -->
+                <span var-handle="hName"></span> (<span var-handle="hAge"></span> y.o.)
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+
+
+        function RootController()
+        {
+            // var loops; // ta zmienna jest wstrzyknięta automatycznie (patrzeć na RootController.INJECTIONS)
+
+            this.onCreate = function()
+            {
+                var people = this.loops.getLoop( 'people' ); // pobieramy uchwyt do pętli (zmienna 'loops' zostala wstrzyknięta - patrzeć na RootController.INJECTIONS)
+
+                var data = [
+                    {
+                        name: 'Jak Kowalski',
+                        age: 40
+                    },
+                    {
+                        name: 'Mikołaj Kopernik',
+                        age: 63
+                    },
+                    {
+                        name: 'Kubuś puchatek',
+                        age: 13
+                    }
+                ];
+
+                for( var i = 0; i < data.length; ++i )
+                    people.addItem( data[ i ] );
+            };
+        }
+
+        RootController.INJECTIONS = [ // tablica INJECTIONS umożliwia wstrzykiwanie obiektow do instancji kontrolera (Organizer został stworzony do pracy z dekoratorami TypeScript jednak istnieje możliwość korzystanie z niego z poziomu JavaScript)
+            new Core.Organizer.InjectionSurrogate( Core.Organizer.InjectionName.Loops, 'loops' ) // InjectionName.Loops - nazwa wykorzystywanej usługi, loops - nazwa zmiennej wewnątrz której umeiszczona zostanie kolekcja pętli
+        ];
+
+
+
+        function PersonController()
+        {
+            // var hName;
+            // var hAge;
+
+            this.onCreate = function( index, data )
+            {
+                this.hName.textContent = data.name;
+                this.hAge.textContent = data.age;
+            };
+        }
+
+
+
+        var hTemplate = document.getElementById( 'template' );
+
+        var organizer = new Core.Organizer.Organizer( 'Root', null, true );
+
+        organizer.addController( 'Root', RootController );
+        organizer.addController( 'Person', PersonController );
+
+        var composition = organizer.composeTemplate( hTemplate.innerHTML );
+
+        composition.mount( document.body );
+
+    </script>
+</body>
+</html>
