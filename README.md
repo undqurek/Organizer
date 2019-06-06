@@ -1,2 +1,2 @@
 # Organizer
-Organizer is TypeScript Front-End framework.
+Organizer is Web Frontend framework written in TypeScript.
